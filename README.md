@@ -76,23 +76,29 @@ GDSII
 🧩 Architecture
 
 The Serial-Parallel Multiplier consists of:
-
-Partial Product Generation
-Carry-Save Adder (CSADD) stages
-Two's Complement / Sign-Correction (TCMP) stage
-Top-level spm module
-Serial product output
+* Partial Product Generation
+* Carry-Save Adder (CSADD) stages
+* Two's Complement / Sign-Correction (TCMP) stage
+* Top-level spm module
+* Serial product output
 
 For an N-bit configuration, the architecture contains:
 
+```text
 (N − 1) × CSADD
        +
     1 × TCMP
 
+```
+
 For example, with size = 8:
 
+
+```text
 7 × CSADD + 1 × TCMP
-Architecture Diagram
+
+```
+## Architecture Diagram
 ```text
                          Serial Input
                               y
@@ -115,11 +121,12 @@ Architecture Diagram
                     Common clk / asynchronous active-high rst
 ```
 1. Partial Product Generation
-
 For every stage, the partial-product contribution is generated using:
 
-x[i] & y
 
+```text
+x[i] & y
+```
 Here:
 
 x is the N-bit parallel operand.
@@ -189,8 +196,10 @@ x[size-1] & y
 
 The module maintains an internal state z and generates the corrected output using:
 
+```text
 z <= a | z;
 s <= a ^ z;
+```
 
 The TCMP stage provides the required MSB/sign-correction behavior for the implemented two's-complement multiplication architecture.
 
@@ -199,20 +208,20 @@ Like the CSADD stages, TCMP is sequential and operates using the common:
 clk
 asynchronous active-high rst
 4. Top-Level spm Module
-
 The spm module connects the complete multiplier architecture.
 
 The design is parameterized using:
 
+```text
 parameter size = 32;
-
+```
 The intermediate outputs are connected through the pp signal chain.
 
 The repeated CSADD stages are generated using Verilog's:
-
+```text
 generate
 genvar
-
+```
 This provides a scalable structural implementation without manually replicating each stage.
 
 Structural Organization
@@ -233,14 +242,15 @@ Structural Organization
 
 
               Common clk / asynchronous active-high rst
-🔄 Serial Processing
+## Serial Processing
 
 The multiplier operand is supplied serially through the single-bit input y.
 
 In the testbench, the multiplier operand is shifted right by one bit every clock cycle:
 
+```text 
 Y <= {1'b0, Y[7:1]};
-
+```
 Therefore:
 ```text
 Y[0] ──▶ y ──▶ SPM ──▶ p
@@ -279,6 +289,7 @@ spm #(8) uut (
 );
 
 ```
+## Test Configuration
 ```text
 | Parameter            |                    Value |
 | -------------------- | -----------------------: |
