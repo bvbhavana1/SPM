@@ -295,7 +295,7 @@ spm #(8) uut (
 ## Test Configuration
 ```
 | Parameter            |                    Value |
-| -------------------- | -----------------------: |
+| ------------------------------------------------|
 | SPM Configuration    |                    8-bit |
 | Parallel Operand `x` |                       50 |
 | Serial Operand `Y`   |                      -50 |
@@ -377,7 +377,7 @@ The design was implemented using the OpenLane RTL-to-GDSII flow, targeting the S
 The main OpenLane configuration uses the following parameters:
 ```text
 | Parameter               |             Value |
-| ----------------------- | ----------------: |
+| --------------------------------------------|
 | Design Name             |             `spm` |
 | RTL Source              |         `src/*.v` |
 | PDK                     |            SKY130 |
@@ -414,7 +414,7 @@ The design was taken through the complete RTL-to-GDSII implementation flow and e
 The reported sign-off results include post-RCX static timing analysis, power analysis, DRC, LVS, and antenna verification.
 ```text
 | Metric                        |                 Value |
-| ----------------------------- | --------------------: |
+| ----------------------------------------------------- |
 | PDK                           |                SKY130 |
 | Standard Cell Library         |     `sky130_fd_sc_hd` |
 | Die Size                      | 101.85 µm × 112.57 µm |
@@ -431,7 +431,7 @@ The reported sign-off results include post-RCX static timing analysis, power ana
 ## Post-RCX Static Timing Analysis
 ```text
 | Timing Metric                    |        Value |
-| -------------------------------- | ------------ |
+| ----------------------------------------------- |
 | Setup WNS                        |  0.00 ns     |
 | Hold WNS                         | +0.32 ns     |
 | TNS                              |  0.00 ns     |
@@ -444,7 +444,7 @@ The final reported post-RCX STA achieved non-negative setup and hold timing, wit
 ## Power Analysis — Typical Corner
 ```text
 | Power Metric              |        Value |
-| ------------------------- | -----------: |
+| ---------------------------------------- |
 | **Total Power**           |  **1.06 mW** |
 | Sequential Power Share    |        38.9% |
 | Combinational Power Share |        61.1% |
@@ -461,7 +461,7 @@ Combinational Logic    61.1%  ████████████████�
 ## Physical Implementation
 ```text
 | Sign-Off Check                   |    Result |
-| -------------------------------- | --------- |
+| -------------------------------------------- |
 | DRC Violations — Magic           |     0     |
 | LVS Errors — Netgen              |     0     |
 | LVS Nets                         |   435     |
@@ -476,7 +476,7 @@ The final reported physical verification completed with:
 ## Final Implementation Summary
 ```text
 | Category              | Metric                     | 
-| --------------------- | -------------------------- | 
+| ----------------------- -------------------------- | 
 | Architecture          | Serial-Parallel Multiplier |    
 | RTL                   | Parameterized Verilog      |     
 | PDK                   | SKY130                     |     
@@ -501,7 +501,7 @@ The final reported physical verification completed with:
 The synthesized design contains 301 standard cells.
 ```text
 | Standard Cell              |   Count |
-| -------------------------- | ------: |
+| ------------------------------------ |
 | `sky130_fd_sc_hd__dfrtp_2` |      64 |
 | `sky130_fd_sc_hd__inv_2`   |      64 |
 | `sky130_fd_sc_hd__and2_2`  |      32 |
@@ -518,7 +518,7 @@ The synthesized design contains 301 standard cells.
 ## Tools and Technologies
 ```text
 | Category               | Tool / Technology          |
-| ---------------------- | -------------------------- |
+| --------------------------------------------------- |
 | RTL Design             | Verilog HDL                |
 | RTL Simulation         | Icarus Verilog / Verilator |
 | Waveform Analysis      | GTKWave                    |
@@ -613,7 +613,7 @@ The project demonstrates hands-on understanding of RTL design, digital synthesis
 ## Project Information
 ```text
 | Field                | Details                        |
-| -------------------- | ------------------------------ |
+| ----------------------------------------------------- |
 | Project              | Serial-Parallel Multiplier     |
 | Domain               | Digital VLSI / ASIC Design     |
 | Architecture         | Serial-Parallel Multiplication |
@@ -626,19 +626,4 @@ The project demonstrates hands-on understanding of RTL design, digital synthesis
 | Standard Cells       | `sky130_fd_sc_hd`              |
 | Target Frequency     | 100 MHz                        |
 | Implementation       | RTL-to-GDSII                   |
-```
-```
-Field	Details
-Project	Serial-Parallel Multiplier
-Domain	Digital VLSI / ASIC Design
-Architecture	Serial-Parallel Multiplication
-HDL	Verilog
-ASIC Flow	OpenLane
-Synthesis	Yosys
-Physical Design	OpenROAD
-STA	OpenSTA
-PDK	SKY130
-Standard Cells	sky130_fd_sc_hd
-Target Frequency	100 MHz
-Implementation	RTL-to-GDSII
 ```
