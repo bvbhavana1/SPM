@@ -235,8 +235,7 @@ This provides a scalable structural implementation without manually replicating 
           │               │                │
           └───────────────┴────────────────┘
                           │
-
-                ▼
+                          ▼
                         TCMP
                           │
                           ▼
@@ -416,29 +415,33 @@ The reported sign-off results include post-RCX static timing analysis, power ana
 ```text
 | Metric                        |                 Value |
 | ----------------------------- | --------------------: |
-| **PDK**                       |                SKY130 |
-| **Standard Cell Library**     |     `sky130_fd_sc_hd` |
-| **Die Size**                  | 101.85 µm × 112.57 µm |
-| **Die Area**                  |          ≈ 11,465 µm² |
-| **Core Size**                 |   90.62 µm × 89.76 µm |
-| **Core Area**                 |           ≈ 8,134 µm² |
-| **Core Utilization**          |               **45%** |
-| **Post-Synthesis Cell Count** |               **301** |
-| **Post-Synthesis Cell Area**  |      **3,711.06 µm²** |
-| **Target Clock Period**       |             **10 ns** |
-| **Target Frequency**          |           **100 MHz** |
+| PDK                           |                SKY130 |
+| Standard Cell Library         |     `sky130_fd_sc_hd` |
+| Die Size                      | 101.85 µm × 112.57 µm |
+| Die Area                      |          ≈ 11,465 µm² |
+| Core Size                     |   90.62 µm × 89.76 µm |
+| Core Area                     |           ≈ 8,134 µm² |
+| Core Utilization              |               45%     |
+| Post-Synthesis Cell Count     |               301     |
+| Post-Synthesis Cell Area      |      3,711.06 µm²     |
+| Target Clock Period           |             10 ns     |
+| Target Frequency              |           100 MHz     |
 ```
+
+## Post-RCX Static Timing Analysis
 ```text
 | Timing Metric                    |        Value |
-| -------------------------------- | -----------: |
-| **Setup WNS**                    |  **0.00 ns** |
-| **Hold WNS**                     | **+0.32 ns** |
-| **TNS**                          |  **0.00 ns** |
-| **Worst Setup Slack — Post-RCX** | **+6.79 ns** |
-| **Clock Skew**                   |  **0.04 ns** |
-| **Timing Status**                |      **MET** |
+| -------------------------------- | ------------ |
+| Setup WNS                        |  0.00 ns     |
+| Hold WNS                         | +0.32 ns     |
+| TNS                              |  0.00 ns     |
+| Worst Setup Slack — Post-RCX     | +6.79 ns     |    
+| Clock Skew                       |  0.04 ns     |
+| Timing Status                    |      MET     |
 ```
 The final reported post-RCX STA achieved non-negative setup and hold timing, with 0.00 ns total negative slack.
+
+## Power Analysis — Typical Corner
 ```text
 | Power Metric              |        Value |
 | ------------------------- | -----------: |
@@ -450,16 +453,20 @@ The final reported post-RCX STA achieved non-negative setup and hold timing, wit
 | Leakage Power             | ≈ 0.00279 µW |
 ```
 The reported total power at the analyzed typical corner is 1.06 mW.
-
+Power Distribution
+```text
+Sequential Logic       38.9%  ███████████████████
+Combinational Logic    61.1%  ██████████████████████████████
+```
 ## Physical Implementation
 ```text
 | Sign-Off Check                   |    Result |
-| -------------------------------- | --------: |
-| **DRC Violations — Magic**       |     **0** |
-| **LVS Errors — Netgen**          |     **0** |
-| **LVS Nets**                     |   **435** |
-| **Antenna Violations**           |     **0** |
-| **Physical Verification Status** | **CLEAN** |
+| -------------------------------- | --------- |
+| DRC Violations — Magic           |     0     |
+| LVS Errors — Netgen              |     0     |
+| LVS Nets                         |   435     |
+| Antenna Violations               |     0     |
+| Physical Verification Status     | CLEAN    |
 ```
 The final reported physical verification completed with:
 0 DRC violations
@@ -607,16 +614,16 @@ The project demonstrates hands-on understanding of RTL design, digital synthesis
 ```text
 | Field                | Details                        |
 | -------------------- | ------------------------------ |
-| **Project**          | Serial-Parallel Multiplier     |
-| **Domain**           | Digital VLSI / ASIC Design     |
-| **Architecture**     | Serial-Parallel Multiplication |
-| **HDL**              | Verilog                        |
-| **ASIC Flow**        | OpenLane                       |
-| **Synthesis**        | Yosys                          |
-| **Physical Design**  | OpenROAD                       |
-| **STA**              | OpenSTA                        |
-| **PDK**              | SKY130                         |
-| **Standard Cells**   | `sky130_fd_sc_hd`              |
-| **Target Frequency** | 100 MHz                        |
-| **Implementation**   | RTL-to-GDSII                   |
+| Project              | Serial-Parallel Multiplier     |
+| Domain               | Digital VLSI / ASIC Design     |
+| Architecture         | Serial-Parallel Multiplication |
+| HDL                  | Verilog                        |
+| ASIC Flow            | OpenLane                       |
+| Synthesis            | Yosys                          |
+| Physical Design      | OpenROAD                       |
+| STA                  | OpenSTA                        |
+| PDK                  | SKY130                         |
+| Standard Cells       | `sky130_fd_sc_hd`              |
+| Target Frequency     | 100 MHz                        |
+| Implementation       | RTL-to-GDSII                   |
 ```
