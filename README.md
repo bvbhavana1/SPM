@@ -9,7 +9,6 @@
 [![Target](https://img.shields.io/badge/Target-100%20MHz-success)]()
 [![DRC](https://img.shields.io/badge/DRC-0%20Violations-success)]()
 [![LVS](https://img.shields.io/badge/LVS-0%20Errors-success)]()
-[![Antenna_violations](https://img.shields.io/badge/Antenna_violations-0%20Errors-success)]()
 
 
 ## 🚀 Project Highlights
