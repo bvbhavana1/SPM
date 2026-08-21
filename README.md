@@ -1,4 +1,4 @@
-# ⚡ SPM — Serial-Parallel Multiplier | Complete RTL-to-GDSII ASIC Implementation
+### SPM — Serial-Parallel Multiplier | Complete RTL-to-GDSII ASIC Implementation
 
 > **A parameterized Serial-Parallel Multiplier designed in Verilog and implemented through a complete open-source RTL-to-GDSII ASIC flow using OpenLane and the SKY130 PDK.**
 
@@ -9,6 +9,7 @@
 [![Target](https://img.shields.io/badge/Target-100%20MHz-success)]()
 [![DRC](https://img.shields.io/badge/DRC-0%20Violations-success)]()
 [![LVS](https://img.shields.io/badge/LVS-0%20Errors-success)]()
+[![Antenna Violations](https://img.shields.io/badge/Antenna Violations-0%20Errors-success)]()
 
 ---
 
