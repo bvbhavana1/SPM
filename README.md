@@ -224,8 +224,9 @@ genvar
 ```
 This provides a scalable structural implementation without manually replicating each stage.
 
-Structural Organization
-                         spm
+## Structural Organization
+
+```text                         spm
                           │
           ┌───────────────┼────────────────┐
           │               │                │
@@ -234,7 +235,8 @@ Structural Organization
           │               │                │
           └───────────────┴────────────────┘
                           │
-                          ▼
+
+                ▼
                         TCMP
                           │
                           ▼
@@ -242,6 +244,8 @@ Structural Organization
 
 
               Common clk / asynchronous active-high rst
+
+```
 ## Serial Processing
 
 The multiplier operand is supplied serially through the single-bit input y.
