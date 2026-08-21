@@ -93,7 +93,7 @@ DRC (Magic) / LVS (Netgen) → 0 DRC, 0 LVS errors
 GDSI
 ```
 
-**> 📸 Add screenshots:** floorplan / placement / routed layout from Magic → `docs/floorplan.png`, `docs/placement.png`, `docs/routing.png`
+**> 📸
 
 ### Sign-off Results
 
@@ -120,7 +120,7 @@ GDSI
 
 All timing, power, and physical verification results were signed off at the **post-RC-extraction (RCX)** stage — the most accurate, parasitic-aware timing/power corner in the flow — confirming a fully closed, DRC-clean, LVS-clean implementation.
 
-**> 📸 Add screenshot:** the `report_power`, `report_worst_slack`, and `LVS reports no net, device, pin, or property mismatches` terminal outputs → save as `docs/signoff_sta.png`, `docs/signoff_lvs.png`
+**> 📸 
 
 ## Cell Breakdown (Post-Synthesis)
 
@@ -181,7 +181,3 @@ make mount
 - Add a self-checking (assertion-based or scoreboard) testbench instead of visual waveform verification
 - Explore hold-slack margin (currently 0.32 ns) sensitivity across PVT corners
 
-## Author
-
-**Bhavana B V**
-[LinkedIn](https://linkedin.com/in/bhavanabv) · [GitHub](https://github.com/bvbhavana1)
