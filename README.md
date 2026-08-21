@@ -293,7 +293,7 @@ spm #(8) uut (
 
 ```
 ## Test Configuration
-```text
+```
 | Parameter            |                    Value |
 | -------------------- | -----------------------: |
 | SPM Configuration    |                    8-bit |
