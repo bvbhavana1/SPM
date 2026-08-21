@@ -627,3 +627,18 @@ The project demonstrates hands-on understanding of RTL design, digital synthesis
 | Target Frequency     | 100 MHz                        |
 | Implementation       | RTL-to-GDSII                   |
 ```
+```
+Field	Details
+Project	Serial-Parallel Multiplier
+Domain	Digital VLSI / ASIC Design
+Architecture	Serial-Parallel Multiplication
+HDL	Verilog
+ASIC Flow	OpenLane
+Synthesis	Yosys
+Physical Design	OpenROAD
+STA	OpenSTA
+PDK	SKY130
+Standard Cells	sky130_fd_sc_hd
+Target Frequency	100 MHz
+Implementation	RTL-to-GDSII
+```
