@@ -290,8 +290,7 @@ spm #(8) uut (
     .x(x),
     .p(p)
 );
-
-`
+```
 ## Test Configuration
 ```text
 | Parameter            |                    Value |
