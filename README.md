@@ -10,31 +10,222 @@ This project covers the design end-to-end: RTL implementation, functional simula
 
 ## Architecture
 
-The multiplier is built from two structural building blocks, instantiated `size` times via a `generate` loop:
+The **Serial-Parallel Multiplier (SPM)** is a parameterized, synchronous multiplier implemented using a chain of **Carry-Save Adder (`CSADD`) stages** followed by a **Two's Complement / Sign-Correction (`TCMP`) stage**.
 
-### 1. Carry-Save Adder (`CSADD`)
-A sequential (registered) carry-save adder cell — the fundamental unit of the multiplier's accumulator chain. Each `CSADD` stage:
-- Takes a partial product bit (`x[i] & y`) and a carry-in from the next stage
-- Computes sum and carry through two cascaded half-adders
-- Registers both `sum` and the internal carry (`sc`) on every clock edge
+The design accepts an `N`-bit operand `x` in parallel, while the multiplier operand is supplied serially through the single-bit input `y`. During each clock cycle, one bit of the serial multiplier operand is processed together with the corresponding partial-product contribution from `x`.
 
-### 2. Two's Complement / Sign-Correction Stage (`TCMP`)
-Handles the final (MSB) stage of the accumulator chain, applying the correction needed for signed multiplication using a running XOR/OR-based carry-propagation scheme.
+The architecture is parameterized using the `size` parameter, with a default value of `32`.
 
-### 3. Top Module (`spm`)
-Chains `size-1` instances of `CSADD` and a single `TCMP` stage via a `generate`/`genvar` loop, forming a systolic-style bit-serial multiplier pipeline. The design is fully synchronous, with `clk` and `rst` common to every stage.
+### Architecture Overview
+
 ```text
-y ──────────────────────────────────────────┐
-                                                  │
+                         y
+                         │
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+        ▼                ▼                ▼
+     x[0] & y         x[1] & y         x[2] & y       ...      x[N-1] & y
+        │                │                │                         │
+        ▼                ▼                ▼                         ▼
+   ┌─────────┐      ┌─────────┐      ┌─────────┐             ┌─────────┐
+   │ CSADD₀  │─────▶│ CSADD₁  │─────▶│ CSADD₂  │─── ... ───▶│  TCMP   │
+   └────┬────┘      └────┬────┘      └────┬────┘             └────┬────┘
+        │                │                │                         │
+        ▼                ▼                ▼                         ▼
+        p              pp[1]            pp[2]                    pp[N-1]
 
-x[0] ──AND──▶ CSADD₀ ──▶ p (serial output) │
-▲ │
-x[1] ──AND──▶ CSADD₁ ────────────────────────────┘
-▲
-x[2] ──AND──▶ CSADD₂
-⋮
-x[N-1] ──AND──▶ TCMP (sign correction, final stage)
+              Sequential Carry-Save Accumulation Chain
+                         │
+                    clk / rst
 ```
+
+### 1. Partial Product Generation
+
+For every stage, the partial product is generated using:
+
+```verilog
+x[i] & y
+```
+
+Since `x` is an `N`-bit parallel operand and `y` is a single-bit serial input, each clock cycle activates the required bits of `x` according to the current value of `y`.
+
+The generated partial-product bits are supplied to the corresponding `CSADD` stages.
+
+### 2. Carry-Save Adder (`CSADD`)
+
+`CSADD` is the primary processing element used to perform sequential accumulation.
+
+Each `CSADD` receives:
+
+* `x` — the current partial-product bit (`x[i] & y`)
+* `y` — the accumulated value from the next stage
+* `sc` — the internally stored carry
+
+The addition is implemented using **two cascaded half-adders**:
+
+```text
+        y ───────┐
+                 ▼
+              Half Adder
+                 │
+        sc ──────┘
+                 │
+                 ▼
+              hsum1
+                 │
+                 ▼
+        x ───▶ Half Adder
+                 │
+                 ▼
+               sum
+```
+
+The carry outputs from the two half-adders are combined to generate the next internal carry:
+
+```verilog
+sc <= hco1 ^ hco2;
+```
+
+Both `sum` and `sc` are registered on the rising edge of `clk`.
+
+Each `CSADD` therefore provides **sequential carry-save accumulation**, allowing the partial-product information to propagate through the multiplier chain over successive clock cycles.
+
+### 3. Two's Complement / Sign-Correction Stage (`TCMP`)
+
+The final stage of the architecture is the `TCMP` module.
+
+`TCMP` processes the most significant partial-product bit:
+
+```verilog
+x[size-1] & y
+```
+
+It maintains an internal state `z` and generates the corrected final-stage output using:
+
+```verilog
+z <= a | z;
+s <= a ^ z;
+```
+
+The stage therefore provides the required **MSB/sign-correction behavior** for the multiplier's two's-complement operation.
+
+Like the `CSADD` stages, `TCMP` is sequential and operates on the common `clk` and `rst` signals.
+
+### 4. Top-Level `spm` Module
+
+The `spm` module connects the complete multiplier architecture.
+
+For an `N`-bit configuration:
+
+* One `CSADD` stage is instantiated for `x[0]`.
+* `N-2` additional `CSADD` stages are generated using a `generate` loop.
+* One `TCMP` stage processes `x[N-1]`.
+* The intermediate stage outputs are connected through the `pp` signal chain.
+* All stages share the same `clk` and asynchronous active-high `rst`.
+
+The resulting structure contains:
+
+```text
+(N - 1) × CSADD
+        +
+    1 × TCMP
+```
+
+For example, with `size = 8`:
+
+```text
+7 × CSADD + 1 × TCMP
+```
+
+### 5. Serial Processing and Testbench Operation
+
+The testbench demonstrates the serial operation of the multiplier.
+
+The multiplier operand `Y` is initialized and shifted right by one bit every clock cycle:
+
+```verilog
+Y <= {1'b0, Y[7:1]};
+```
+
+Therefore, `Y[0]` is presented to the SPM as the serial input `y`.
+
+At the same time, the generated serial output `p` is accumulated into the product register `P`:
+
+```verilog
+P <= {p, P[15:1]};
+```
+
+A cycle counter is also used to track the serial multiplication process.
+
+For the 8-bit test configuration:
+
+```text
+       X = 50
+       Y = -50
+
+             │
+             ▼
+     ┌─────────────────┐
+     │ Serial bit      │
+     │ extraction      │
+     │    Y[0]         │
+     └────────┬────────┘
+              │
+              ▼
+        ┌───────────┐
+ X ────▶│    SPM    │────▶ p
+        │ 8-bit     │
+        └───────────┘
+              │
+              ▼
+       Serial product
+              │
+              ▼
+        Product P[15:0]
+```
+
+### Key Architectural Characteristics
+
+| Feature                     | Description                                                         |
+| --------------------------- | ------------------------------------------------------------------- |
+| **Architecture**            | Serial-Parallel Multiplier                                          |
+| **Parallel Operand**        | `x[size-1:0]`                                                       |
+| **Serial Operand**          | Single-bit `y`                                                      |
+| **Core Processing Element** | `CSADD`                                                             |
+| **Final Stage**             | `TCMP`                                                              |
+| **Partial Product**         | `x[i] & y`                                                          |
+| **Adder Structure**         | Two cascaded half-adders                                            |
+| **Carry Storage**           | Registered `sc`                                                     |
+| **Control**                 | `clk` and asynchronous active-high `rst`                            |
+| **Parameterization**        | Configurable through `size`                                         |
+| **Stage Generation**        | Verilog `generate` / `genvar`                                       |
+| **Output**                  | Serial product bit `p`                                              |
+| **Verification**            | Verilog testbench with serial `Y` shifting and product accumulation |
+
+### RTL Structure
+
+```text
+                         spm
+                          │
+          ┌───────────────┼────────────────┐
+          │               │                │
+          ▼               ▼                ▼
+       CSADD₀          CSADD₁ ...      CSADD[N-2]
+          │               │                │
+          └───────────────┴────────────────┘
+                          │
+                          ▼
+                        TCMP
+                          │
+                          ▼
+                          p
+
+             Common clk and asynchronous rst
+```
+
+This structural organization makes the SPM **parameterizable, synthesizable, and suitable for RTL-to-GDSII implementation**.
+
 
 ## Port Description
 
