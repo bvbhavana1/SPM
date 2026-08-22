@@ -42,41 +42,50 @@ The design is parameterized through the `size` parameter, allowing the architect
 
 The project covers the complete digital ASIC implementation flow:
 
+                ```text
+                RTL Design
+                    │
+                    ▼
+                RTL Simulation
+                    │
+                    ▼
+                Logic Synthesis
+                    │
+                    ▼
+                Floorplanning
+                    │
+                    ▼
+                Placement
+                    │
+                    ▼
+                Clock Tree Synthesis
+                    │
+                    ▼
+                Routing
+                    │
+                    ▼
+                Parasitic Extraction
+                    │
+                    ▼
+                Static Timing Analysis
+                    │
+                    ▼
+                DRC / LVS / Antenna Verification
+                    │
+                    ▼
+                  GDSII
+                ```
+## The Screenshots for this project are present in the above Repository structure :
 ```text
-RTL Design
-    │
-    ▼
-RTL Simulation
-    │
-    ▼
-Logic Synthesis
-    │
-    ▼
-Floorplanning
-    │
-    ▼
-Placement
-    │
-    ▼
-Clock Tree Synthesis
-    │
-    ▼
-Routing
-    │
-    ▼
-Parasitic Extraction
-    │
-    ▼
-Static Timing Analysis
-    │
-    ▼
-DRC / LVS / Antenna Verification
-    │
-    ▼
-GDSII
+screenshots
+   ├── synthesis
+   ├── floorplan
+   ├── placement
+   ├── CTS
+   ├── routing
+   ├── signoff
 ```
-
-## 🧩 Architecture
+##  Architecture
 
 The Serial-Parallel Multiplier consists of:
 - Partial Product Generation
