@@ -29,7 +29,16 @@
 - Generated the final **GDSII physical layout** using the SKY130 standard-cell technology.
 
 ---
-
+## Repository Structure for the screenshots of this project :
+```text
+ screenshots/
+│   ├── synthesis
+│   ├── fllorplan
+│   ├── placement
+│   ├── CTS
+|   ├── routing
+│   └── signoff
+```
 # 📌 Overview
 
 The **Serial-Parallel Multiplier (SPM)** multiplies an `N`-bit parallel operand `x` with a serially supplied multiplier operand `y`.
